@@ -1,3 +1,64 @@
+create database company;
+use company;
+#TABLE 1 JOBS
+
+create table jobs(job_id varchar(50) primary key,job_title varchar(50),
+min_salary int,max_salary int);
+desc jobs;
+
+#TABLE 2 REGIONS
+create table regions(region_id varchar(50) primary key,
+region_name varchar(50));
+desc regions;
+
+#TABLE 3 COUNTRIES
+create table countries(country_id varchar(50) primary key,
+country_name varchar(50),region_id varchar(50),
+foreign key(region_id)references regions(region_id));
+desc countries;
+
+#TABLE 4 LOCATIONS
+create table locations(location_id varchar(50) primary key,
+street_address varchar(50),postal_code varchar(50),city varchar(50),
+state_province varchar(50),country_id varchar(50),
+foreign key (country_id)references countries (country_id));
+desc locations;
+
+#TABLE 5 DEPARTMENTS
+create table departments(department_id varchar(50) primary key,
+department_name varchar(50),location_id varchar(50),
+foreign key(location_id) references locations(location_id));
+desc departments;
+
+#TABLE 6 EMPLOYEES
+create table employees(employee_id varchar(50) primary key,
+first_name varchar(50),last_name varchar(50),
+email varchar(50),phone_number varchar(50),hire_date date,
+job_id varchar(50),salary int,
+manager_id varchar(50),
+department_id varchar(50),
+foreign key(job_id)references jobs(job_id),
+foreign key(department_id)references departments(department_id));
+alter table employees add foreign key(manager_id)references employees(employee_id);
+desc employees;
+
+#TABLE 7 DEPENDENTS
+create table dependents(dependent_id varchar(50) primary key,
+first_name varchar(50),last_name varchar(50),relationship varchar(50),
+employee_id varchar(50),foreign key(employee_id) references employees(employee_id));
+desc dependents;
+
+
+alter table departments rename dept;
+desc dept;
+
+alter table employees modify salary smallint;
+desc employees;
+
+alter table employees add commission varchar(50);
+desc employees;
+
+show tables;
 
 
 
@@ -8,7 +69,8 @@ INSERT INTO regions(region_id,region_name) VALUES (4,'Middle East andAfrica');
 select * from regions;
 
 
-
+#TABLE COUNTRIES VALUES
+/*Data for the table countries */
 INSERT INTO countries(country_id,country_name,region_id) VALUES ('AR','Argentina',2);
 INSERT INTO countries(country_id,country_name,region_id) VALUES ('AU','Australia',3);
 INSERT INTO countries(country_id,country_name,region_id) VALUES ('BE','Belgium',1);
@@ -36,7 +98,7 @@ INSERT INTO countries(country_id,country_name,region_id) VALUES ('ZM','Zambia',4
 INSERT INTO countries(country_id,country_name,region_id) VALUES ('ZW','Zimbabwe',4);
 select * from countries;
 
-
+/*Data for the table locations */
 INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES (1400,'2014 Jabberwocky Rd','26192','Southlake','Texas','US');
 INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES (1500,'2011 Interiors Blvd','99236','South SanFrancisco','California','US');
 INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES (1700,'2004 Charade Rd','98199','Seattle','Washington','US');
@@ -46,7 +108,7 @@ INSERT INTO locations(location_id,street_address,postal_code,city,state_province
 INSERT INTO locations(location_id,street_address,postal_code,city,state_province,country_id) VALUES (2700,'Schwanthalerstr. 7031','80925','Munich','Bavaria','DE');
 select * from locations;
 
-
+/*Data for the table jobs */
 INSERT INTO jobs(job_id,job_title,min_salary,max_salary) VALUES (1,'Public Accountant',4200.00,9000.00);
 INSERT INTO jobs(job_id,job_title,min_salary,max_salary) VALUES (2,'Accounting Manager',8200.00,16000.00);
 INSERT INTO jobs(job_id,job_title,min_salary,max_salary) VALUES (3,'Administration Assistant',3000.00,6000.00);
@@ -70,7 +132,7 @@ INSERT INTO jobs(job_id,job_title,min_salary,max_salary) VALUES (19,'Stock Manag
 select * from jobs;
 
 
-
+/*Data for the table departments */
 INSERT INTO dept(department_id,department_name,location_id) VALUES (1,'Administration',1700);
 INSERT INTO dept(department_id,department_name,location_id) VALUES (2,'Marketing',1800);
 INSERT INTO dept(department_id,department_name,location_id) VALUES (3,'Purchasing',1700);
@@ -87,7 +149,7 @@ select * from dept;
 
 
 
-
+/*Data for the table employees */
 INSERT INTO employees(employee_id,first_name,last_name,email,phone_number,hire_date,job_id,salary,manager_id,department_id) VALUES(100,'Steven','King','steven.king@sqltutorial.org','515.123.4567','1987-06-17',4,24000.00,NULL,9);
 INSERT INTO employees(employee_id,first_name,last_name,email,phone_number,hire_date,job_id,salary,manager_id,department_id) VALUES(101,'Neena','Kochhar','neena.kochhar@sqltutorial.org','515.123.4568','1989-09-21',5,17000.00,100,9);
 INSERT INTO employees(employee_id,first_name,last_name,email,phone_number,hire_date,job_id,salary,manager_id,department_id) VALUES (102,'Lex','DHaan','lex.de haan@sqltutorial.org','515.123.4569','1993-01-13',5,17000.00,100,9);
@@ -131,7 +193,7 @@ INSERT INTO employees(employee_id,first_name,last_name,email,phone_number,hire_d
 
 select * from employees;
 
-
+/*Data for the table dependents */
 
 INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES (1,'Penelope','Gietz','Child',206);
 INSERT INTO dependents(dependent_id,first_name,last_name,relationship,employee_id) VALUES (2,'Nick','Higgins','Child',205);
